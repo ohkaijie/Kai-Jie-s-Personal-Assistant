@@ -1,3 +1,6 @@
+var token = "ENTER_FACEBOOK_PAGE_ACCESS_TOKEN_HERE"
+var apiAiToken = "ENTER_API.AI_CLIENT_ACESS_TOKEN_HERE"
+
 var express = require('express')
 var bodyParser = require('body-parser')
 var request = require('request')
@@ -11,9 +14,6 @@ var userscript = require('./userscript');
 //Include Api.API API library
 //var apiaiIndex = require('./apiaiIndex');
 //Not used for now
-
-
-var token = "CAADDIdBGGukBAP17JXOjMBrt980IsiuoHfgYSCxZB7sfuUldPEsKRVwdCEJuR3WUZCUD5oJtDQP8ZAIsRr2lI1hDNbx0FgNWUnuZCF3mUkU2U2mlSqOfITG0C0MCHRqmyFbO2y3n2PnolLxhwRkWP81A1UaM1kLtHlwjMcZBfbv7s8fZBnTRF38e1ndCdaztAZD"
 
 app.set('port', (process.env.PORT || 5000))
 
@@ -68,15 +68,15 @@ app.post('/webhook/', function (req, res) {
 				//Not Working!
 				
 				//Integrate to api.ai API 
-				var app = apiai("12a615d88488401283dfaa785a9e33c4");
+				var app = apiai(apiAiToken);
 				var apiAiRequest = app.textRequest(text);
 				apiAiRequest.on('response', function(response) {
 					console.log(response.result.fulfillment.speech);
 					sendTextMessage(sender, response.result.fulfillment.speech.substring(0, 300)); //String Limit - because length of param message [text] send to messenger must be less than or equal to 320
 					if(response.result.fulfillment.speech.length>300)
-						sendTextMessage(sender, response.result.fulfillment.speech.substring(301, 600));
+						sendTextMessage(sender, response.result.fulfillment.speech.substring(300, 600));
 					if(response.result.fulfillment.speech.length>600)
-						sendTextMessage(sender, response.result.fulfillment.speech.substring(601, 1200));
+						sendTextMessage(sender, response.result.fulfillment.speech.substring(600, 1200));
 				});
 				apiAiRequest.on('error', function(error) {
 					console.log(error);
